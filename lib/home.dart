@@ -1,15 +1,11 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
-//import 'package:tflite/tflite.dart';
-// ignore: unused_import
-import 'package:tflite_flutter/tflite_flutter.dart';
-
 import 'package:image_picker/image_picker.dart';
 import 'package:tflite_v2/tflite_v2.dart';
+import 'info.dart'; // Import InfoPage
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  const HomeScreen({Key? key}) : super(key: key);
 
   @override
   State<HomeScreen> createState() => _HomeState();
@@ -45,18 +41,19 @@ class _HomeState extends State<HomeScreen> {
 
   loadModel() async {
     await Tflite.loadModel(
-        model: 'assets/model_unquant.tflite', labels: 'assets/labels.txt');
+      model: 'assets/model_unquant.tflite',
+      labels: 'assets/labels.txt',
+    );
   }
 
   @override
   void dispose() {
-    // TODO: implement dispose
     Tflite.close();
     super.dispose();
   }
 
-  pickImage() async {
-    var image = await picker.pickImage(source: ImageSource.camera);
+  pickImage(ImageSource source) async {
+    var image = await picker.pickImage(source: source);
     if (image == null) return null;
 
     setState(() {
@@ -66,109 +63,176 @@ class _HomeState extends State<HomeScreen> {
     classifyImage(_image);
   }
 
-  pickGalleryImage() async {
-    var image = await picker.pickImage(source: ImageSource.gallery);
-    if (image == null) return null;
-
-    setState(() {
-      _image = File(image.path);
-    });
-
-    classifyImage(_image);
+  // Function to navigate to InfoPage with the prediction
+  void navigateToInfoPage(String prediction) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => InfoPage(prediction: prediction),
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Container(
-        padding: EdgeInsets.symmetric(horizontal: 24),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            SizedBox(height: 85),
-            Text(
-              'Sri Lankan Best',
-              style: TextStyle(color: Colors.black, fontSize: 25),
-            ),
-            SizedBox(height: 6),
-            Text(
-              'Detect Food',
-              style: TextStyle(color: Colors.black, fontSize: 35),
-            ),
-            SizedBox(height: 40),
-            Center(
-              child: _loading
-                  ? Container(
-                      width: 250,
-                      child: Column(
-                        children: <Widget>[
-                          Image.asset('assets/app.png'),
-                          SizedBox(height: 50),
-                        ],
-                      ),
-                    )
-                  : Container(
-                      child: Column(
-                        children: <Widget>[
-                          Container(
-                            height: 250,
-                            child: Image.file(_image),
-                          ),
-                          SizedBox(height: 20),
-                          // ignore: unnecessary_null_comparison
-                          _output != null
-                              ? Text(
-                                  '${_output[0]}',
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 20,
+      body: SingleChildScrollView(
+        child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 24),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              SizedBox(height: 60),
+              Center(
+                child: Text(
+                  'Sri Lankan Local Food',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 32,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              SizedBox(height: 6),
+              Center(
+                child: Text(
+                  'Detect Food',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              SizedBox(height: 40),
+              Center(
+                child: _loading
+                    ? Container(
+                        width: 250,
+                        height: 300,
+                        child: Column(
+                          children: <Widget>[
+                            Image.asset('assets/cooking.png'),
+                            SizedBox(height: 50),
+                          ],
+                        ),
+                      )
+                    : Container(
+                        child: Column(
+                          children: <Widget>[
+                            Container(
+                              height: 250,
+                              width: 250,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(12),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withOpacity(0.1),
+                                    spreadRadius: 2,
+                                    blurRadius: 5,
+                                    offset: Offset(0, 3),
                                   ),
-                                )
-                              : Container(),
-                        ],
+                                ],
+                                image: DecorationImage(
+                                  image: FileImage(_image),
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            ),
+                            SizedBox(height: 20),
+                            _output != null
+                                ? Text(
+                                    '${_output[0]['label'].replaceAll(RegExp(r'[0-9]'), '')}',
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  )
+                                : Container(),
+                            SizedBox(height: 10),
+                          ],
+                        ),
+                      ),
+              ),
+              SizedBox(height: 10),
+              Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    ElevatedButton.icon(
+                      onPressed: () => pickImage(ImageSource.camera),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.amber,
+                        foregroundColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                      icon: Icon(
+                        Icons.camera_alt,
+                        color: Colors.white,
+                      ),
+                      label: Text(
+                        'Take a Photo',
+                        style: TextStyle(
+                          fontSize: 18,
+                        ),
                       ),
                     ),
-            ),
-            Container(
-              width: MediaQuery.of(context).size.width,
-              child: Column(children: <Widget>[
-                GestureDetector(
-                  onTap: pickImage,
-                  child: Container(
-                    width: MediaQuery.of(context).size.width - 150,
-                    alignment: Alignment.center,
-                    padding: EdgeInsets.symmetric(horizontal: 24, vertical: 17),
-                    decoration: BoxDecoration(
-                      color: Colors.amber,
-                      borderRadius: BorderRadius.circular(6),
+                    SizedBox(height: 2),
+                    ElevatedButton.icon(
+                      onPressed: () => pickImage(ImageSource.gallery),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.amber,
+                        foregroundColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                      icon: Icon(
+                        Icons.photo_library,
+                        color: Colors.white,
+                      ),
+                      label: Text(
+                        'Camera Roll',
+                        style: TextStyle(
+                          fontSize: 18,
+                        ),
+                      ),
                     ),
-                    child: Text(
-                      'Take a photo',
-                      style: TextStyle(color: Colors.white, fontSize: 20),
+                    SizedBox(height: 2),
+                    ElevatedButton.icon(
+                      onPressed: () {
+                        if (_output != null && _output.isNotEmpty) {
+                          // Assuming you want to display the first prediction detail
+                          navigateToInfoPage(_output[0]['label']
+                              .replaceAll(RegExp(r'[0-9]'), ''));
+                        }
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.amber,
+                        foregroundColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                      icon: Icon(
+                        Icons.info,
+                        color: Colors.white,
+                      ),
+                      label: Text(
+                        'Prediction Details',
+                        style: TextStyle(
+                          fontSize: 18,
+                        ),
+                      ),
                     ),
-                  ),
+                  ],
                 ),
-                SizedBox(height: 10),
-                GestureDetector(
-                  onTap: pickGalleryImage,
-                  child: Container(
-                    width: MediaQuery.of(context).size.width - 150,
-                    alignment: Alignment.center,
-                    padding: EdgeInsets.symmetric(horizontal: 24, vertical: 17),
-                    decoration: BoxDecoration(
-                      color: Colors.amber,
-                      borderRadius: BorderRadius.circular(6),
-                    ),
-                    child: Text(
-                      'Camera Roll',
-                      style: TextStyle(color: Colors.white, fontSize: 20),
-                    ),
-                  ),
-                ),
-              ]),
-            )
-          ],
+              ),
+            ],
+          ),
         ),
       ),
     );

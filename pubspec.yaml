@@ -76,6 +76,12 @@ flutter:
     - assets/
     - assets/labels.txt
     - assets/model_unquant.tflite
+    - assets/hoppers.jpg
+    - assets/milk rice.png
+    - assets/roti.jpg
+    - assets/string hoppers.png
+    - assets/wade.jpg
+    - assets/koththu.jpeg
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

@@ -28,9 +28,20 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Text(
-          'Food App',
-          style: TextStyle(fontSize: 24),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Image.asset(
+              'assets/fish.png', // Replace with the actual path to your image
+              width: 150, // Adjust the width as needed
+              height: 150, // Adjust the height as needed
+            ),
+            SizedBox(height: 20), // Add some spacing
+            Text(
+              'Food App',
+              style: TextStyle(fontSize: 24),
+            ),
+          ],
         ),
       ),
     );
