@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_null_comparison
+
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -83,28 +85,30 @@ class _HomeState extends State<HomeScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               SizedBox(height: 60),
-              Center(
+              const Center(
                 child: Text(
                   'Sri Lankan Local Food',
                   style: TextStyle(
                     color: Colors.black,
+                    fontFamily: 'Source Sans 3',
                     fontSize: 32,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
               ),
               SizedBox(height: 6),
-              Center(
+              const Center(
                 child: Text(
-                  'Detect Food',
+                  'Scan Your Food',
                   style: TextStyle(
                     color: Colors.black,
+                    fontFamily: 'Source Sans 3',
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
               ),
-              SizedBox(height: 40),
+              SizedBox(height: 20),
               Center(
                 child: _loading
                     ? Container(
@@ -112,8 +116,8 @@ class _HomeState extends State<HomeScreen> {
                         height: 300,
                         child: Column(
                           children: <Widget>[
-                            Image.asset('assets/cooking.png'),
-                            SizedBox(height: 50),
+                            Image.asset('assets/plate.png'),
+                            SizedBox(height: 30),
                           ],
                         ),
                       )
@@ -143,7 +147,7 @@ class _HomeState extends State<HomeScreen> {
                             _output != null
                                 ? Text(
                                     '${_output[0]['label'].replaceAll(RegExp(r'[0-9]'), '')}',
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       color: Colors.black,
                                       fontSize: 20,
                                       fontWeight: FontWeight.bold,
@@ -165,15 +169,16 @@ class _HomeState extends State<HomeScreen> {
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.amber,
                         foregroundColor: Colors.white,
+                        elevation: 5,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
                         ),
                       ),
-                      icon: Icon(
+                      icon: const Icon(
                         Icons.camera_alt,
                         color: Colors.white,
                       ),
-                      label: Text(
+                      label: const Text(
                         'Take a Photo',
                         style: TextStyle(
                           fontSize: 18,
@@ -186,15 +191,16 @@ class _HomeState extends State<HomeScreen> {
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.amber,
                         foregroundColor: Colors.white,
+                        elevation: 5,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
                         ),
                       ),
-                      icon: Icon(
+                      icon: const Icon(
                         Icons.photo_library,
                         color: Colors.white,
                       ),
-                      label: Text(
+                      label: const Text(
                         'Camera Roll',
                         style: TextStyle(
                           fontSize: 18,
@@ -213,15 +219,16 @@ class _HomeState extends State<HomeScreen> {
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.amber,
                         foregroundColor: Colors.white,
+                        elevation: 5,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
                         ),
                       ),
-                      icon: Icon(
+                      icon: const Icon(
                         Icons.info,
                         color: Colors.white,
                       ),
-                      label: Text(
+                      label: const Text(
                         'Prediction Details',
                         style: TextStyle(
                           fontSize: 18,

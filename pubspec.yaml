@@ -52,6 +52,8 @@ flutter_native_splash:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+    
+    
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -82,6 +84,19 @@ flutter:
     - assets/string hoppers.png
     - assets/wade.jpg
     - assets/koththu.jpeg
+
+  fonts:
+    - family: Pacifico
+      fonts:
+      - asset: fonts/Pacifico-Regular.ttf
+
+    - family: Source Sans 3
+      fonts:
+      - asset: fonts/SourceSans3-Regular.ttf
+
+    - family: Source Sans 3
+      fonts:
+      - asset: fonts/LilitaOne-Regular.ttf
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

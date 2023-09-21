@@ -32,14 +32,17 @@ class _SplashScreenState extends State<SplashScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Image.asset(
-              'assets/fish.png', // Replace with the actual path to your image
+              'assets/diet.png', // Replace with the actual path to your image
               width: 150, // Adjust the width as needed
               height: 150, // Adjust the height as needed
             ),
             SizedBox(height: 20), // Add some spacing
             Text(
-              'Food App',
-              style: TextStyle(fontSize: 24),
+              'Foodie',
+              style: TextStyle(
+                fontSize: 54,
+                fontFamily: 'LilitaOne-Regular',
+              ),
             ),
           ],
         ),
