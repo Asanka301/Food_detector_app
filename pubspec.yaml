@@ -28,12 +28,15 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+  fl_chart: ^0.63.0
   flutter:
     sdk: flutter
+  flutter_charts: ^0.5.1
   image_picker: ^1.0.4
   #tflite: ^1.1.2
   tflite_flutter: ^0.10.1
   tflite_v2: ^1.0.0
+  url_launcher: ^6.1.14
 
 flutter_native_splash:
   color: 42A5F5
@@ -84,6 +87,9 @@ flutter:
     - assets/string hoppers.png
     - assets/wade.jpg
     - assets/koththu.jpeg
+    - assets/hoppers3.jpg
+  
+  
 
   fonts:
     - family: Pacifico
@@ -97,7 +103,11 @@ flutter:
     - family: Source Sans 3
       fonts:
       - asset: fonts/LilitaOne-Regular.ttf
-  #   - images/a_dot_ham.jpeg
+
+    - family: Source Sans 3
+      fonts:
+      - asset: fonts/Skranji-Bold.ttf
+      
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

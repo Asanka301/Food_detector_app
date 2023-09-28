@@ -17,7 +17,7 @@ class _AddReviewPageState extends State<AddReviewPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Add Review - ${widget.prediction}'),
-        backgroundColor: Colors.amber,
+        backgroundColor: Colors.teal[600],
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -33,17 +33,17 @@ class _AddReviewPageState extends State<AddReviewPage> {
                 ),
               ),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             TextFormField(
               controller: reviewController,
               maxLines: 5,
               decoration: InputDecoration(
                 labelText: 'Your Review',
                 hintText: 'Share your thoughts about ${widget.prediction}...',
-                border: OutlineInputBorder(),
+                border: const OutlineInputBorder(),
               ),
             ),
-            SizedBox(height: 24),
+            const SizedBox(height: 24),
             Center(
               child: Column(
                 children: [
@@ -56,12 +56,12 @@ class _AddReviewPageState extends State<AddReviewPage> {
                       }
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.amber,
+                      backgroundColor: Colors.teal[600],
                       foregroundColor: Colors.white,
                       elevation: 5, // Text color
-                      padding: EdgeInsets.all(16),
+                      padding: const EdgeInsets.all(16),
                     ),
-                    child: Text(
+                    child: const Text(
                       'Submit Review',
                       style: TextStyle(fontSize: 18),
                     ),

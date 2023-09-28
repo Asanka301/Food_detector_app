@@ -2,9 +2,11 @@
 
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:food_app2/gallery_page.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tflite_v2/tflite_v2.dart';
 import 'info.dart'; // Import InfoPage
+//
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -14,10 +16,17 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeState extends State<HomeScreen> {
+  /*int currentPage = 0;
+  List<Widget> pages = [
+    GalleryPage(),
+  ]; */
+  int _currentIndex = 0;
   bool _loading = true;
   late File _image;
   late List _output;
   final ImagePicker picker = ImagePicker();
+
+  //get botttomNavigationBar => null;
 
   @override
   void initState() {
@@ -77,89 +86,89 @@ class _HomeState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Center(child: Text('Explore Sri Lankan Food')),
+        backgroundColor: Colors.teal[600],
+      ),
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 24),
+          padding: const EdgeInsets.symmetric(horizontal: 24),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              SizedBox(height: 60),
-              const Center(
-                child: Text(
-                  'Sri Lankan Local Food',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontFamily: 'Source Sans 3',
-                    fontSize: 32,
-                    fontWeight: FontWeight.bold,
+              const SizedBox(height: 30),
+              const SizedBox(height: 2),
+              Center(
+                child: Card(
+                  elevation: 5, // Add elevation for a shadow effect
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(6),
+                  ),
+                  child: const Padding(
+                    padding: EdgeInsets.all(8),
+                    child: Text(
+                      'Scan Your Food Here',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontFamily: 'Skranji-Bold',
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
                 ),
               ),
-              SizedBox(height: 6),
-              const Center(
-                child: Text(
-                  'Scan Your Food',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontFamily: 'Source Sans 3',
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               Center(
                 child: _loading
                     ? Container(
-                        width: 250,
-                        height: 300,
+                        width: 200,
+                        height: 250,
                         child: Column(
                           children: <Widget>[
-                            Image.asset('assets/plate.png'),
-                            SizedBox(height: 30),
+                            Image.asset('assets/online.png'),
+                            const SizedBox(height: 2),
                           ],
                         ),
                       )
-                    : Container(
-                        child: Column(
-                          children: <Widget>[
-                            Container(
-                              height: 250,
-                              width: 250,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(12),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.black.withOpacity(0.1),
-                                    spreadRadius: 2,
-                                    blurRadius: 5,
-                                    offset: Offset(0, 3),
-                                  ),
-                                ],
-                                image: DecorationImage(
-                                  image: FileImage(_image),
-                                  fit: BoxFit.cover,
+                    : Column(
+                        children: <Widget>[
+                          Container(
+                            height: 250,
+                            width: 250,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(12),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.1),
+                                  spreadRadius: 2,
+                                  blurRadius: 5,
+                                  offset: const Offset(0, 3),
                                 ),
+                              ],
+                              image: DecorationImage(
+                                image: FileImage(_image),
+                                fit: BoxFit.cover,
                               ),
                             ),
-                            SizedBox(height: 20),
-                            _output != null
-                                ? Text(
-                                    '${_output[0]['label'].replaceAll(RegExp(r'[0-9]'), '')}',
-                                    style: const TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  )
-                                : Container(),
-                            SizedBox(height: 10),
-                          ],
-                        ),
+                          ),
+                          const SizedBox(height: 1),
+                          _output != null
+                              ? Text(
+                                  '${_output[0]['label'].replaceAll(RegExp(r'[0-9]'), '')}',
+                                  style: const TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                )
+                              : Container(),
+                          const SizedBox(height: 10),
+                        ],
                       ),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 1),
               Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -167,7 +176,7 @@ class _HomeState extends State<HomeScreen> {
                     ElevatedButton.icon(
                       onPressed: () => pickImage(ImageSource.camera),
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.amber,
+                        backgroundColor: Colors.teal[600],
                         foregroundColor: Colors.white,
                         elevation: 5,
                         shape: RoundedRectangleBorder(
@@ -185,11 +194,11 @@ class _HomeState extends State<HomeScreen> {
                         ),
                       ),
                     ),
-                    SizedBox(height: 2),
+                    const SizedBox(height: 2),
                     ElevatedButton.icon(
                       onPressed: () => pickImage(ImageSource.gallery),
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.amber,
+                        backgroundColor: Colors.teal[600],
                         foregroundColor: Colors.white,
                         elevation: 5,
                         shape: RoundedRectangleBorder(
@@ -207,7 +216,7 @@ class _HomeState extends State<HomeScreen> {
                         ),
                       ),
                     ),
-                    SizedBox(height: 2),
+                    const SizedBox(height: 2),
                     ElevatedButton.icon(
                       onPressed: () {
                         if (_output != null && _output.isNotEmpty) {
@@ -217,7 +226,7 @@ class _HomeState extends State<HomeScreen> {
                         }
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.amber,
+                        backgroundColor: Colors.teal[600],
                         foregroundColor: Colors.white,
                         elevation: 5,
                         shape: RoundedRectangleBorder(
@@ -242,6 +251,45 @@ class _HomeState extends State<HomeScreen> {
           ),
         ),
       ),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _currentIndex,
+        onTap: (index) {
+          setState(() {
+            _currentIndex = index;
+            if (_currentIndex == 1) {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => GalleryPage(),
+                ),
+              );
+            }
+          });
+        },
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.image),
+            label: 'Gallery',
+          ),
+        ],
+      ),
+      /*bottomNavigationBar: NavigationBar(
+        destinations: const [
+          NavigationDestination(icon: Icon(Icons.home), label: 'Home'),
+          NavigationDestination(icon: Icon(Icons.image), label: 'Gallery'),
+          NavigationDestination(icon: Icon(Icons.favorite), label: 'Favorites'),
+          NavigationDestination(icon: Icon(Icons.favorite), label: 'Favorites'),
+        ],
+        onDestinationSelected: (int index) {
+          setState(() {
+            currentPage = index;
+          });
+        },
+        selectedIndex: currentPage,
+      ),*/
     );
   }
 }

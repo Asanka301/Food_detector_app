@@ -76,7 +76,7 @@ class _ReviewsPageState extends State<ReviewsPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Reviews - ${widget.prediction}'),
-        backgroundColor: Colors.amber,
+        backgroundColor: Colors.teal[600],
       ),
       body: Column(
         children: [
@@ -84,7 +84,7 @@ class _ReviewsPageState extends State<ReviewsPage> {
             padding: const EdgeInsets.all(16.0),
             child: Text(
               'Reviews for ${widget.prediction}:',
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
                 fontFamily: 'SourceSans3-Regular',
@@ -118,11 +118,11 @@ class _ReviewsPageState extends State<ReviewsPage> {
                 }
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.amber, // Customize the button color
+                backgroundColor: Colors.teal[600], // Customize the button color
                 foregroundColor: Colors.white,
                 elevation: 5, // Customize the text color
               ),
-              child: Text('Add Review'),
+              child: const Text('Add Review'),
             ),
           ),
         ],
@@ -135,25 +135,25 @@ class ReviewWidget extends StatelessWidget {
   final String author;
   final String text;
 
-  ReviewWidget({required this.author, required this.text});
+  const ReviewWidget({required this.author, required this.text});
 
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       elevation: 2,
       child: ListTile(
-        leading: Icon(Icons.account_circle, size: 48),
+        leading: const Icon(Icons.account_circle, size: 48),
         title: Text(
           author,
-          style: TextStyle(
+          style: const TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.bold,
           ),
         ),
         subtitle: Text(
           text,
-          style: TextStyle(fontSize: 16),
+          style: const TextStyle(fontSize: 16),
         ),
       ),
     );

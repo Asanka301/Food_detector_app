@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+//import 'package:food_app2/SpiceLevelChart.dart';
 import 'package:food_app2/reviews.dart';
+import 'package:food_app2/similar_items.dart';
+import 'spicelevelchart.dart';
+//import 'package:url_launcher/url_launcher.dart';
 
 class InfoPage extends StatelessWidget {
   final String prediction;
@@ -27,7 +31,17 @@ class InfoPage extends StatelessWidget {
     }
   }
 
-  // Define a function to get ratings based on the food prediction
+  /*void _launchSearchInBrowser(String searchQuery) async {
+    final url = Uri.parse(
+        'https://www.google.com/search?q=${Uri.encodeQueryComponent(searchQuery)}');
+    if (await canLaunchUrl(url.toString() as Uri)) {
+      await launchUrl(url.toString() as Uri);
+    } else {
+      throw 'Could not launch $url';
+    }
+  } */
+
+  // Define a function to get ratings
   String getRating(String prediction) {
     // Customize this function to return ratings for each food
     switch (prediction) {
@@ -43,6 +57,25 @@ class InfoPage extends StatelessWidget {
         return '4.6';
       case 'milk rice':
         return '4.3';
+      default:
+        return 'N/A';
+    }
+  }
+
+  String getSpiceLevel(String prediction) {
+    switch (prediction) {
+      case 'koththu':
+        return 'Very Spicy';
+      case 'roti':
+        return 'Low Spicy';
+      case 'milk rice':
+        return 'Not Spicy';
+      case 'hoppers':
+        return 'Low Spicy';
+      case 'wade':
+        return 'Very Spicy';
+      case 'string hoppers':
+        return 'Very Low Spicy';
       default:
         return 'N/A';
     }
@@ -78,21 +111,21 @@ class InfoPage extends StatelessWidget {
         // Full star
         stars.add(const Icon(
           Icons.star,
-          color: Colors.amber,
+          color: Colors.teal,
           size: 24,
         ));
       } else if (ratingValue > i) {
         // Half star
         stars.add(const Icon(
           Icons.star_half,
-          color: Colors.amber,
+          color: Colors.teal,
           size: 24,
         ));
       } else {
         // Empty star
         stars.add(const Icon(
           Icons.star_border,
-          color: Colors.amber,
+          color: Colors.teal,
           size: 24,
         ));
       }
@@ -100,6 +133,15 @@ class InfoPage extends StatelessWidget {
 
     return stars;
   }
+
+// Define colors for each spice level
+  final Map<String, Color> spiceLevelColors = {
+    'Very Low Spicy': Colors.green,
+    'Low Spicy': Colors.yellow,
+    'Not Spicy': Colors.blue,
+    'Very Spicy': Colors.red,
+    'N/A': Colors.grey,
+  };
 
   @override
   Widget build(BuildContext context) {
@@ -113,6 +155,7 @@ class InfoPage extends StatelessWidget {
         getNutritionalInfo(prediction); // Get nutritional info
     String rating = getRating(prediction);
     String price = getPrice(prediction); // Get rating
+    String spiceLevel = getSpiceLevel(prediction);
 
     // Customize image, title, description, ingredients, cooking instructions, and nutritional information based on the prediction
     switch (prediction) {
@@ -180,215 +223,287 @@ class InfoPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Prediction Details'),
-        backgroundColor: Colors.amber, // Customize the app bar color
+        title: const Text('Prediction Details'),
+        backgroundColor: Colors.teal[600], // Customize the app bar color
       ),
       body: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            Padding(
-              padding: EdgeInsets.all(16),
-              child: Text(
-                'Food : $title',
-                style: const TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    fontFamily: 'SourceSans3-Regular'),
+        child: Center(
+          child: Column(
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.all(16),
+                child: Text(
+                  'Food : $title',
+                  style: const TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'SourceSans3-Regular'),
+                ),
               ),
-            ),
-            Image.asset(
-              imagePath,
-              width: 300, // Adjust the width as needed
-              height: 300, // Adjust the height as needed
-              fit: BoxFit.cover, // Ensure the image covers the available space
-            ),
-            Padding(
-              padding: EdgeInsets.all(16),
-              child: Text(
-                description,
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 18),
+              Image.asset(
+                imagePath,
+                width: 300, // Adjust the width as needed
+                height: 300, // Adjust the height as needed
+                fit:
+                    BoxFit.cover, // Ensure the image covers the available space
               ),
-            ),
-            // Ingredients Card
-            Row(
-              children: [
-                Expanded(
-                  child: Card(
-                    margin: EdgeInsets.all(16),
-                    child: Padding(
-                      padding: EdgeInsets.all(16),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            'Ingredients',
-                            style: TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.bold),
-                          ),
-                          SizedBox(height: 8),
-                          Text(
-                            ingredients,
-                            style: TextStyle(fontSize: 16),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
+              Padding(
+                padding: const EdgeInsets.all(16),
+                child: Text(
+                  description,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(fontSize: 18),
                 ),
-              ],
-            ),
-            // Nutritional Information Card
-            Row(
-              children: [
-                Expanded(
-                  child: Card(
-                    margin: EdgeInsets.all(16),
-                    child: Padding(
-                      padding: EdgeInsets.all(16),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            'Nutritional Information',
-                            style: TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.bold),
-                          ),
-                          SizedBox(height: 8),
-                          Text(
-                            nutritionalInfo,
-                            style: TextStyle(fontSize: 16),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            // Cooking Instructions Card
-            Row(
-              children: [
-                Expanded(
-                  child: Card(
-                    margin: EdgeInsets.all(16),
-                    child: Padding(
-                      padding: EdgeInsets.all(16),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            'Cooking Instructions',
-                            style: TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.bold),
-                          ),
-                          const SizedBox(height: 8),
-                          Text(
-                            cookingInstructions,
-                            style: const TextStyle(fontSize: 16),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            // Ratings Card
-            Row(
-              children: [
-                Expanded(
-                  child: Card(
-                    margin: EdgeInsets.all(16),
-                    child: Padding(
-                      padding: EdgeInsets.all(16),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            'Rating',
-                            style: TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.bold),
-                          ),
-                          SizedBox(height: 8),
-                          Row(
-                            children: generateStarIcons(rating),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            Row(
-              children: [
-                Expanded(
-                  child: Card(
-                    margin: EdgeInsets.all(16),
-                    child: Padding(
-                      padding: EdgeInsets.all(16),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            'Max Price',
-                            style: TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.bold),
-                          ),
-                          const SizedBox(height: 8),
-                          Text(
-                            price,
-                            style: const TextStyle(fontSize: 16),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 10),
-            Row(
-              children: [
-                Expanded(
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.of(context).pop(); // Close the InfoPage
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor:
-                          Colors.amber, // Customize the button color
-                      foregroundColor: Colors.white,
-                      elevation: 5, // Customize the text color
-                    ),
-                    child: Text('Back'),
-                  ),
-                ),
-                SizedBox(width: 8), // Add some spacing between the buttons
-                Expanded(
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              ReviewsPage(prediction: prediction),
+              ),
+
+              // Ingredients Card
+              Row(
+                children: [
+                  SizedBox(width: 8), // Add spacing between buttons
+
+                  Expanded(
+                    child: Card(
+                      margin: const EdgeInsets.all(16),
+                      child: Padding(
+                        padding: const EdgeInsets.all(16),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              'Ingredients',
+                              style: TextStyle(
+                                  fontSize: 18, fontWeight: FontWeight.bold),
+                            ),
+                            const SizedBox(height: 8),
+                            Text(
+                              ingredients,
+                              style: const TextStyle(fontSize: 16),
+                            ),
+                          ],
                         ),
-                      );
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor:
-                          Colors.amber, // Customize the button color
-                      foregroundColor: Colors.white,
-                      elevation: 5, // Customize the text color
+                      ),
                     ),
-                    child: Text('View Reviews'),
                   ),
+                ],
+              ),
+              // Nutritional Information Card
+              Row(
+                children: [
+                  Expanded(
+                    child: Card(
+                      margin: const EdgeInsets.all(16),
+                      child: Padding(
+                        padding: const EdgeInsets.all(16),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              'Nutritional Information',
+                              style: TextStyle(
+                                  fontSize: 18, fontWeight: FontWeight.bold),
+                            ),
+                            const SizedBox(height: 8),
+                            Text(
+                              nutritionalInfo,
+                              style: const TextStyle(fontSize: 16),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              // Cooking Instructions Card
+              Row(
+                children: [
+                  Expanded(
+                    child: Card(
+                      margin: const EdgeInsets.all(16),
+                      child: Padding(
+                        padding: const EdgeInsets.all(16),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              'Cooking Instructions',
+                              style: TextStyle(
+                                  fontSize: 18, fontWeight: FontWeight.bold),
+                            ),
+                            const SizedBox(height: 8),
+                            Text(
+                              cookingInstructions,
+                              style: const TextStyle(fontSize: 16),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              // Ratings Card
+              Row(
+                children: [
+                  Expanded(
+                    child: Card(
+                      margin: const EdgeInsets.all(16),
+                      child: Padding(
+                        padding: const EdgeInsets.all(16),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              'Rating',
+                              style: TextStyle(
+                                  fontSize: 18, fontWeight: FontWeight.bold),
+                            ),
+                            const SizedBox(height: 8),
+                            Row(
+                              children: generateStarIcons(rating),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  Expanded(
+                    child: Card(
+                      margin: const EdgeInsets.all(16),
+                      child: Padding(
+                        padding: const EdgeInsets.all(16),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              'Max Price',
+                              style: TextStyle(
+                                  fontSize: 18, fontWeight: FontWeight.bold),
+                            ),
+                            const SizedBox(height: 8),
+                            Text(
+                              price,
+                              style: const TextStyle(fontSize: 16),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              // Spice Level Card
+              Row(
+                children: [
+                  Expanded(
+                    child: Card(
+                      margin: const EdgeInsets.all(16),
+                      child: Padding(
+                        padding: const EdgeInsets.all(16),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              'Spice Level',
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            const SizedBox(height: 8),
+                            SpiceLevelChart(
+                              spiceLevel: spiceLevel,
+                              spiceLevelColors: spiceLevelColors,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              /* const SizedBox(height: 10),
+              ElevatedButton(
+                onPressed: () {
+                  // Replace 'prediction' with the term you want to search
+                  _launchSearchInBrowser(prediction);
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.teal[600],
+                  foregroundColor: Colors.white,
+                  elevation: 5,
                 ),
-              ],
-            )
-          ],
+                child: const Text('Search Online'),
+              ), */
+
+              Row(
+                children: [
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context).pop(); // Close the InfoPage
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor:
+                            Colors.teal[600], // Customize the button color
+                        foregroundColor: Colors.white,
+                        elevation: 5, // Customize the text color
+                      ),
+                      child: const Text('Back'),
+                    ),
+                  ),
+                  const SizedBox(
+                      width: 8), // Add some spacing between the buttons
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                ReviewsPage(prediction: prediction),
+                          ),
+                        );
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor:
+                            Colors.teal[600], // Customize the button color
+                        foregroundColor: Colors.white,
+                        elevation: 5, // Customize the text color
+                      ),
+                      child: const Text('View Reviews'),
+                    ),
+                  ),
+                  const SizedBox(width: 8), // Add spacing between buttons
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => SimilarItemsPage(
+                              prediction: prediction,
+                            ), // Navigate to SimilarItemsPage
+                          ),
+                        );
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor:
+                            Colors.teal[600], // Customize the button color
+                        foregroundColor: Colors.white,
+                        elevation: 5, // Customize the text color
+                      ),
+                      child: const Text('Similar Items'), // Button text
+                    ),
+                  ),
+                ],
+              )
+            ],
+          ),
         ),
       ),
     );
